@@ -1,4 +1,3 @@
-
 import { PrismaClient } from "@prisma/client";
 
 // Docs about instantiating `PrismaClient` with Next.js:
