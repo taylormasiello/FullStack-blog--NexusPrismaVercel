@@ -30,6 +30,13 @@ async function publishPost(id: number): Promise<void> {
   await Router.push('/');
 }
 
+async function deletePost(id: number): Promise<void> {
+  await fetch(`http://localhost:3000/api/post/${id}`, {
+    method: 'DELETE',
+  });
+  Router.push('/');
+}
+
 const Post: React.FC<PostProps> = (props) => {
   const [session, loading] = useSession();
   if (loading) {
@@ -47,10 +54,16 @@ const Post: React.FC<PostProps> = (props) => {
       <div>
         <h2>{title}</h2>
         <p>By {props?.author?.name || 'Unknown author'}</p>
-        <ReactMarkdown source={props.content} />
+        <ReactMarkdown children={props.content} />
         {!props.published && userHasValidSession && postBelongsToUser && (
           <button onClick={() => publishPost(props.id)}>Publish</button>
-        )}
+          )
+        }
+        {
+          userHasValidSession && postBelongsToUser && (
+            <button onClick={() => deletePost(props.id)}>Delete</button>
+          )
+        }
       </div>
       <style jsx>{`
         .page {
